@@ -1,0 +1,83 @@
+<configuration>
+    <invoices>
+		<!-- Czy oryginał i kopia wygenerować w oddzielnym pliku? -->
+        <invoice split="Y">
+            <!-- Numer faktury -->
+            <!--
+            <invoiceNumber>x/xx/20xx</invoiceNumber>
+            -->
+            <!-- Data wystawienia faktury, w przypadku braku daty ustawiana jest data systemowa -->
+            <issuingDate>xxxx-xx-xx</issuingDate>
+            <!-- Data sprzedaży -->
+            <!--
+            <sellingDate>2012-08-25</sellingDate> -->
+            <paymentType>przelew</paymentType>
+            <!-- Termin płatności -->
+            <!--
+            <paymentDate>2012-09-24</paymentDate>
+            -->
+            <bankName>BRE Bank S.A.</bankName>
+            <bankAccountNumber>xx xxxx xxxx xxxx xxxx xxxx xxxx</bankAccountNumber>
+            <seller>
+                <name>Company name</name>
+                <nip>NIP number</nip>
+                <address>
+                    <postalCode>xx-xxx</postalCode>
+                    <city>City</city>
+                    <street>Street</street>
+                    <buildingNumber>building number</buildingNumber>
+                </address>
+            </seller>
+            <buyer>
+                <name>Company name</name>
+                <nip>NIP number</nip>
+                <address>
+                    <postalCode>xx-xxx</postalCode>
+                    <city>City</city>
+                    <street>Street</street>
+                    <buildingNumber>building number</buildingNumber>
+                </address>
+            </buyer>
+            <invoiceLines>
+                <invoiceLine>
+                    <lineNumber>1</lineNumber>
+                    <name>invoice line description</name>
+                    <unitsNumber>1</unitsNumber>
+                    <netUnitPrice>100</netUnitPrice>
+                    <vatRate>23</vatRate>
+                </invoiceLine>
+                <invoiceLine>
+                    <lineNumber>2</lineNumber>
+                    <name>invoice line description</name>
+                    <unitsNumber>1</unitsNumber>
+                    <netUnitPrice>200</netUnitPrice>
+                    <vatRate>23</vatRate>
+                </invoiceLine>
+            </invoiceLines>
+        </invoice>
+    </invoices>
+    <acceptance-protocol>
+         <issuingDate>xxxx-xx-xx</issuingDate>
+         <daysNumber>x</daysNumber>
+         <orderNumber>xx</orderNumber>
+         <orderDate>xxxx-xx-xx</orderDate>
+         <orderer>
+             <name>Company name</name>
+             <address>
+                 <postalCode>xx-xxx</postalCode>
+                 <city>City</city>
+                 <street>Street</street>
+                 <buildingNumber>building number</buildingNumber>
+             </address>
+         </orderer>
+         <recipient>
+             <name>Company name</name>
+             <address>
+                 <postalCode>xx-xxx</postalCode>
+                 <city>City</city>
+                 <street>Street</street>
+                 <buildingNumber>building number</buildingNumber>
+             </address>
+         </recipient>
+    </acceptance-protocol>
+</configuration>
