@@ -1,0 +1,1 @@
+java -classpath wsc-23.jar com.sforce.ws.tools.wsdlc partner.wsdl partner.jar

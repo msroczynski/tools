@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/invoice-creator/invoice-creator.iml" filepath="$PROJECT_DIR$/invoice-creator/invoice-creator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sfdc-connector/sfdc-connector.iml" filepath="$PROJECT_DIR$/sfdc-connector/sfdc-connector.iml" />
       <module fileurl="file://$PROJECT_DIR$/tools.iml" filepath="$PROJECT_DIR$/tools.iml" />
     </modules>
   </component>
