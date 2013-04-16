@@ -36,6 +36,7 @@ public class AcceptanceProtocolFactory extends DocumentFactory{
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private void addContent(Document document) throws IOException, DocumentException {
+        document.add(createLogo());
         document.add(createHeader());
         document.add(createPartyInfo());
         document.add(createProtocolInfo());
@@ -69,12 +70,30 @@ public class AcceptanceProtocolFactory extends DocumentFactory{
         return result;
     }
 
+    private PdfPTable createLogo() throws DocumentException, IOException {
+        PdfPTable logoTable = new PdfPTable(2);
+        logoTable.setWidthPercentage(100);
+        logoTable.setWidths(new float[]{10, 3});
+        Image logoImage = Image.getInstance("img/logo-outbox.png");
+        PdfPCell logoCell = new PdfPCell();
+        logoCell.setHorizontalAlignment(Rectangle.RIGHT);
+        logoCell.setImage(logoImage);
+        logoImage.scalePercent(15);
+        if (!showBorder) logoCell.setBorder(Rectangle.NO_BORDER);
+
+        PdfPCell emptyCell = logoTable.getDefaultCell();
+        emptyCell.setBorder(Rectangle.NO_BORDER);
+        logoTable.addCell(emptyCell);
+        logoTable.addCell(logoCell);
+        return logoTable;
+    }
+
     private PdfPTable createHeader() throws DocumentException, IOException {
 
 
         PdfPTable headerTable = new PdfPTable(1);
-
         headerTable.setWidthPercentage(100);
+        headerTable.setSpacingBefore(40);
 
         PdfPCell protocolTitleCell = new PdfPCell(new Paragraph("PROTOKÓŁ ODBIORU USŁUG", getFont(FontFactory.TIMES_BOLD, 16)));
         protocolTitleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -91,11 +110,10 @@ public class AcceptanceProtocolFactory extends DocumentFactory{
 
     }
 
-
     private PdfPTable createPartyInfo() throws DocumentException {
 
         PdfPTable partyInfoTable = new PdfPTable(2);
-        partyInfoTable.setSpacingBefore(100);
+        partyInfoTable.setSpacingBefore(70);
         partyInfoTable.setWidthPercentage(100);
         partyInfoTable.setWidths(new int[]{10, 10});
 
@@ -105,7 +123,7 @@ public class AcceptanceProtocolFactory extends DocumentFactory{
         Paragraph ordererParagraph = null;
         if (getAcceptanceProtocol().hasOrderer()) {
             Orderer orderer = getAcceptanceProtocol().getOrderer();
-            ordererParagraph = new Paragraph(orderer.getName(), getFont(FontFactory.TIMES_BOLD, 9));
+            ordererParagraph = new Paragraph(orderer.getName(), getFont(FontFactory.TIMES_BOLD, 10));
             ordererParagraph.add(Chunk.NEWLINE);
             if (orderer.hasAddress()) {
                 ordererParagraph.add(String.format("%s %s", orderer.getAddress().getPostalCode(), orderer.getAddress().getCity()));
@@ -115,19 +133,18 @@ public class AcceptanceProtocolFactory extends DocumentFactory{
 
         }
         PdfPCell ordererCell = new PdfPCell(ordererParagraph);
-        ordererCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        ordererCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         ordererCell.setVerticalAlignment(Element.ALIGN_CENTER);
 
         PdfPCell recipientHeaderCell = new PdfPCell(new Paragraph("Przyjmujący zamówienie", getFont(FontFactory.TIMES, 10)));
         recipientHeaderCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        recipientHeaderCell.setVerticalAlignment(Element.ALIGN_CENTER);
+        recipientHeaderCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
 
         Paragraph recipientParagraph = null;
         if (getAcceptanceProtocol().hasRecipient()) {
             Recipient recipient = getAcceptanceProtocol().getRecipient();
-            recipientParagraph = new Paragraph(recipient.getName(), getFont(FontFactory.TIMES_BOLD, 9));
-            recipientParagraph.setLeading(5.0f);
+            recipientParagraph = new Paragraph(50, recipient.getName(), getFont(FontFactory.TIMES_BOLD, 10));
             recipientParagraph.add(Chunk.NEWLINE);
             if (recipient.hasAddress()) {
                 recipientParagraph.add(String.format("%s %s", recipient.getAddress().getPostalCode(), recipient.getAddress().getCity()));
@@ -137,8 +154,8 @@ public class AcceptanceProtocolFactory extends DocumentFactory{
         }
 
         PdfPCell recipientCell = new PdfPCell(recipientParagraph);
-        recipientCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        recipientCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        recipientCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        recipientCell.setVerticalAlignment(Element.ALIGN_CENTER);
 
         partyInfoTable.addCell(ordererHeaderCell);
         partyInfoTable.addCell(recipientHeaderCell);
@@ -175,7 +192,7 @@ public class AcceptanceProtocolFactory extends DocumentFactory{
         PdfPTable signsTable = new PdfPTable(5);
         signsTable.setWidths(new int[]{15, 60, 100, 60, 15});
         signsTable.setWidthPercentage(100);
-        signsTable.setSpacingBefore(270);
+        signsTable.setSpacingBefore(170);
 
         PdfPCell signEmptyCell = signsTable.getDefaultCell();
         signEmptyCell.setBorder(Rectangle.NO_BORDER);
@@ -200,6 +217,9 @@ public class AcceptanceProtocolFactory extends DocumentFactory{
 
         return signsTable;
     }
+
+
+
 
 
 }

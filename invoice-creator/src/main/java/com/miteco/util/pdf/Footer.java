@@ -4,7 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
 import java.io.IOException;
-import java.util.Date;
+
 
 public class Footer extends PdfPageEventHelper {
 
@@ -26,31 +26,38 @@ public class Footer extends PdfPageEventHelper {
 
     @Override
     public void onEndPage (PdfWriter writer, Document document) {
-        super.onEndPage(writer, document);
-        Rectangle rect = document.getPageSize();
-        /*
-        cb.beginText();
-        cb.setFontAndSize(bf, 8);
-        //cb.showTextAligned(PdfContentByte.ALIGN_RIGHT, "Outbox Sp. z o.o., ul. Grójecka 5, 02-019 Warszawa,/nXII Wydział Gospodarczy Krajowego Rejestru Sądowego pod KRS 0000213301,/nNIP 527-244-71-95, kapitał zakładowy 270 000 złotych", pageSize.getRight(40), pageSize.getBottom(30), 0);
-        cb.showTextAligned(PdfContentByte.ALIGN_CENTER,"", recPage.getLeft(), recPage.getBottom(), 0);
-        cb.endText();
-          */
 
-
-        final Paragraph phrase = new Paragraph("some long, multi-line string goes here");
-        ColumnText ct = new ColumnText(writer.getDirectContent());
-        ct.addText(new Phrase("fff"));
-        //ct.addText(phrase);
-        //ct.addElement(phrase);
-        //ct.setAlignment(Element.ALIGN_CENTER);
-        ct.setSimpleColumn(rect.getLeft(), rect.getBottom(), rect.getRight(), rect.getBottom());
-        //System.out.println("onEndPage");
         try {
-            ct.go();
-        } catch (DocumentException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
+            Rectangle page = document.getPageSize();
+
+            PdfPTable footerTable = getFooterSignatures();
+            footerTable.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin()-250);
+            footerTable.writeSelectedRows(0, -1, (page.getWidth()-footerTable.getTotalWidth())/2, document.bottomMargin() + 10, writer.getDirectContent());
+
+        } catch (DocumentException ex) {
+
+            ex.printStackTrace();
+
         }
 
-
     }
+
+    private PdfPTable getFooterSignatures() throws DocumentException {
+
+        Font fontStyleFooters = FontFactory.getFont(FontFactory.TIMES_ROMAN, BaseFont.CP1250, 7, Font.NORMAL);
+        PdfPTable footerTable = new PdfPTable(1);
+        footerTable.setWidthPercentage(100);
+        footerTable.getDefaultCell().setPadding(2);
+        footerTable.getDefaultCell().setBorderWidth(0);
+        footerTable.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+        Paragraph para = new Paragraph();
+        para.add(new Chunk("  Outbox Sp. z o.o., ul. Grójecka 5, 02-019 Warszawa,", fontStyleFooters));
+        para.add(new Chunk("\n  XII Wydział Gospodarczy Krajowego Rejestru Sądowego pod KRS 0000213301,", fontStyleFooters));
+        para.add(new Chunk("\n  NIP 527-244-71-95, kapitał zakładowy 270 000 złotych", fontStyleFooters));
+        footerTable.addCell(para);
+        return footerTable;
+    }
+
+
 }
