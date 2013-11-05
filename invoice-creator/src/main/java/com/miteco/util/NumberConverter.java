@@ -1,5 +1,8 @@
 package com.miteco.util;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -148,8 +151,25 @@ public class NumberConverter {
         // Bez groszy
         String bgzlote = (String) szlote.substring(0, szlote.length() - 3);
         Double dzlote = new Double(bgzlote);
+
+
+        // MS temp
+        /*
+        double newDzlote = dzlote * 100;
+        BigDecimal bd = new BigDecimal(amount);
+        bd = bd.setScale(2, RoundingMode.CEILING);
+        double amountRounded = new BigDecimal(amount).setScale(2, RoundingMode.CEILING).doubleValue();
+        bd = bd.multiply(new BigDecimal(100));
+        double amountMultiplied = bd.doubleValue();
+        */
+
         //Od kwoty z groszami odejmuję kwotę bez.
+        /* MS start fix
         Long groszy = (long) (amount * 100 - dzlote * 100);
+        */
+        Long groszy = (long) (new BigDecimal(amount).setScale(2, RoundingMode.CEILING).multiply(new BigDecimal(100)).doubleValue() - dzlote * 100);
+        /* MS end fix */
+
         return groszy;
     }
 
@@ -158,6 +178,8 @@ public class NumberConverter {
             amount = amount * -1;
         }
         String strKwotaSl = "";
+        // temp
+        long grosze = value_gr(amount);
         strKwotaSl = ToWords(value_pln(amount)) + " zł " + ToWords(value_gr(amount)) + " gr";
         return strKwotaSl;
     }
